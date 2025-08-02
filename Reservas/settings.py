@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-*8ag0nu=54_jur_!q-f0jlt_pru(#locmhy7=cpd6p&j+%49ll
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['Reservas.onrender.com', 'localhost']
+ALLOWED_HOSTS = ['Reservas.onrender.com', 'localhost', 'reservas-bt1d.onrender.com']
 
 # login authentication
 LOGIN_URL = '/login/'
