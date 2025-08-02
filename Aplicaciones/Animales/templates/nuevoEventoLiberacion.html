@@ -1,0 +1,59 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 bg-light">
+        <h1>Nuevo Evento de Liberación</h1>
+        <form id="frm_nuevo_evento" action="/guardarEvento/" enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            <label for="animal">Animal:</label>
+            <select class="form-control" name="animal" id="animal" required>
+                <option value="">Seleccione un animal</option>
+                {% for animal in animales %}
+                    <option value="{{ animal.id }}">{{ animal.nombre }}</option>
+                {% endfor %}
+            </select><br>
+
+            <label for="reserva">Reserva Natural:</label>
+            <select class="form-control" name="reserva" id="reserva" required>
+                <option value="">Seleccione una reserva</option>
+                {% for reserva in reservas %}
+                    <option value="{{ reserva.id }}">{{ reserva.nombre }}</option>
+                {% endfor %}
+            </select><br>
+
+            <label for="fecha_liberacion">Fecha de Liberación:</label>
+            <input class="form-control" type="date" name="fecha_liberacion" id="fecha_liberacion" required><br>
+
+            <label for="observaciones">Observaciones:</label>
+            <textarea class="form-control" name="observaciones" id="observaciones" rows="4"></textarea><br>
+
+            <label for="documento">Documento (PDF opcional):</label>
+            <input class="form-control" type="file" name="documento" id="documento" accept="application/pdf"><br>
+
+            <button class="btn btn-success" type="submit">
+                <i class="fa fa-save"></i> Guardar
+            </button>
+            <a class="btn btn-outline-danger" href="/eventos/">
+                <i class="fa fa-times"></i> Cancelar
+            </a>
+        </form>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+
+<script>
+    $("#frm_nuevo_evento").validate({
+        rules: {
+            "animal": { required: true },
+            "reserva": { required: true },
+            "fecha_liberacion": { required: true }
+        },
+        messages: {
+            "animal": { required: "Seleccione un animal" },
+            "reserva": { required: "Seleccione una reserva" },
+            "fecha_liberacion": { required: "Seleccione la fecha de liberación" }
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 bg-light">
+        <h1>Nuevo Animal</h1>
+        <form id="frm_nuevo_animal" action="/guardarAnimal/" enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            <label for="nombre">Nombre:</label>
+            <input class="form-control" type="text" name="nombre" id="nombre" required><br>
+
+            <label for="especie">Especie:</label>
+            <input class="form-control" type="text" name="especie" id="especie" required><br>
+
+            <label for="edad_aproximada">Edad Aproximada:</label>
+            <input class="form-control" type="number" name="edad_aproximada" id="edad_aproximada" required><br>
+
+            <label for="fecha_rescate">Fecha de Rescate:</label>
+            <input class="form-control" type="date" name="fecha_rescate" id="fecha_rescate" required><br>
+
+            <label for="foto">Foto del Animal (opcional):</label>
+            <input class="form-control" type="file" name="foto" id="foto" accept="image/*"><br>
+
+            <button class="btn btn-success" type="submit">
+                <i class="fa fa-save"></i> Guardar
+            </button>
+            <a class="btn btn-outline-danger" href="/animales/">
+                <i class="fa fa-times"></i> Cancelar
+            </a>
+        </form>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+
+<script>
+    $("#frm_nuevo_animal").validate({
+        rules: {
+            "nombre": { required: true, minlength: 2 },
+            "especie": { required: true },
+            "edad_aproximada": { required: true, min: 0 },
+            "fecha_rescate": { required: true }
+        },
+        messages: {
+            "nombre": { required: "Ingrese el nombre", minlength: "Mínimo 2 caracteres" },
+            "especie": { required: "Ingrese la especie" },
+            "edad_aproximada": { required: "Ingrese la edad", min: "Debe ser positiva" },
+            "fecha_rescate": { required: "Seleccione una fecha" }
+        }
+    });
+</script>
+{% endblock %}

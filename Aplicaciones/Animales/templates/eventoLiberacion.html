@@ -1,0 +1,69 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+<br>
+<h1>Listado de Eventos de Liberación</h1>
+<a href="/nuevoEventoLiberacion" class="btn btn-primary">Agregar Evento</a>
+
+<table class="table table-bordered table-striped table-hover" id="tbl_eventos">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Animal</th>
+            <th>Reserva Natural</th>
+            <th>Fecha</th>
+            <th>Observaciones</th>
+            <th>Foto</th>
+            <th>Informe PDF</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for e in eventos %}
+        <tr>
+            <td>{{ e.id }}</td>
+            <td>{{ e.animal }}</td>
+            <td>{{ e.reserva }}</td>
+            <td>{{ e.fecha }}</td>
+            <td>{{ e.observaciones }}</td>
+            <td>
+                {% if e.foto %}
+                    <img src="{{ e.foto.url }}" height="80px">
+                {% else %}
+                    Ninguna
+                {% endif %}
+            </td>
+            <td>
+                {% if e.informe_pdf %}
+                    <a href="{{ e.informe_pdf.url }}" download>{{ e.informe_pdf.name }}</a>
+                {% else %}
+                    Ninguno
+                {% endif %}
+            </td>
+            <td>
+                <a href="/editarEventoLiberacion/{{ e.id }}" class="btn btn-outline-warning"><i class="fa fa-pen"></i></a>
+                <a href="#" onclick="eliminarEvento('{{ e.id }}');" class="btn btn-outline-danger"><i class="fa fa-trash"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    function eliminarEvento(id){
+        Swal.fire({
+            title: "CONFIRMACIÓN",
+            text: "¿Estás seguro de eliminar este evento?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sí, eliminar",
+            cancelButtonText: "Cancelar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "/eliminarEventoLiberacion/" + id;
+            }
+        });
+    }
+
+    new DataTable('#tbl_eventos', { language: { url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' } });
+</script>
+{% endblock %}

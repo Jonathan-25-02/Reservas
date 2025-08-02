@@ -1,0 +1,65 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+<br>
+<h1>Listado de Reservas Naturales</h1>
+<a href="/nuevaReservaNatural" class="btn btn-primary">Agregar Reserva</a>
+
+<table class="table table-bordered table-striped table-hover" id="tbl_reservas">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Ubicación</th>
+            <th>Foto</th>
+            <th>Documento</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in reservas %}
+        <tr>
+            <td>{{ r.id }}</td>
+            <td>{{ r.nombre }}</td>
+            <td>{{ r.ubicacion }}</td>
+            <td>
+                {% if r.foto %}
+                    <img src="{{ r.foto.url }}" height="80px">
+                {% else %}
+                    Ninguna
+                {% endif %}
+            </td>
+            <td>
+                {% if r.documento %}
+                    <a href="{{ r.documento.url }}" download>{{ r.documento.name }}</a>
+                {% else %}
+                    Ninguno
+                {% endif %}
+            </td>
+            <td>
+                <a href="/editarReservaNatural/{{ r.id }}" class="btn btn-outline-warning"><i class="fa fa-pen"></i></a>
+                <a href="#" onclick="eliminarReserva('{{ r.id }}');" class="btn btn-outline-danger"><i class="fa fa-trash"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    function eliminarReserva(id){
+        Swal.fire({
+            title: "CONFIRMACIÓN",
+            text: "¿Estás seguro de eliminar esta reserva?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sí, eliminar",
+            cancelButtonText: "Cancelar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "/eliminarReservaNatural/" + id;
+            }
+        });
+    }
+
+    new DataTable('#tbl_reservas', { language: { url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' } });
+</script>
+{% endblock %}

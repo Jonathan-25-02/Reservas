@@ -1,0 +1,50 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 bg-light">
+        <h1>Editar Reserva Natural</h1>
+        <form id="frm_editar_reserva" action="/actualizarReservaNatural/{{ reserva.id }}/" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="nombre">Nombre:</label><br>
+            <input class="form-control" type="text" name="nombre" id="nombre" value="{{ reserva.nombre }}" required><br><br>
+
+            <label for="ubicacion">Ubicación:</label><br>
+            <input class="form-control" type="text" name="ubicacion" id="ubicacion" value="{{ reserva.ubicacion }}" required><br><br>
+
+            <label for="documento">Documento Actual:</label><br>
+            {% if reserva.documento %}
+                <a href="{{ reserva.documento.url }}" target="_blank">Ver PDF</a><br>
+            {% endif %}
+            <input class="form-control" type="file" name="documento" id="documento"><br><br>
+
+            <button class="btn btn-warning" type="submit">
+                <i class="fa fa-pen"></i> Editar
+            </button>
+            <a class="btn btn-outline-danger" href="/reservasNaturales/">
+                <i class="fa fa-times"></i> Cancelar
+            </a>
+        </form>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+
+<script>
+    $("#frm_editar_reserva").validate({
+        rules: {
+            "nombre": { required: true, minlength: 3 },
+            "ubicacion": { required: true, minlength: 5 }
+        },
+        messages: {
+            "nombre": {
+                required: "Ingrese el nombre de la reserva",
+                minlength: "Mínimo 3 caracteres"
+            },
+            "ubicacion": {
+                required: "Ingrese la ubicación",
+                minlength: "Mínimo 5 caracteres"
+            }
+        }
+    });
+</script>
+{% endblock %}

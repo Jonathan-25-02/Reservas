@@ -1,0 +1,51 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 bg-light">
+        <h1>Editar Evento de Liberación</h1>
+        <form id="frm_editar_evento" action="/actualizarEventoLiberacion/{{ evento.id }}/" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="fecha">Fecha:</label><br>
+            <input class="form-control" type="date" name="fecha" id="fecha" value="{{ evento.fecha|date:'Y-m-d' }}" required><br><br>
+
+            <label for="animal">Animal:</label><br>
+            <select class="form-control" name="animal" id="animal" required>
+                {% for a in animales %}
+                    <option value="{{ a.id }}" {% if evento.animal.id == a.id %}selected{% endif %}>{{ a.nombre }}</option>
+                {% endfor %}
+            </select><br><br>
+
+            <label for="reserva">Reserva Natural:</label><br>
+            <select class="form-control" name="reserva" id="reserva" required>
+                {% for r in reservas %}
+                    <option value="{{ r.id }}" {% if evento.reserva.id == r.id %}selected{% endif %}>{{ r.nombre }}</option>
+                {% endfor %}
+            </select><br><br>
+
+            <button class="btn btn-warning" type="submit">
+                <i class="fa fa-pen"></i> Editar
+            </button>
+            <a class="btn btn-outline-danger" href="/eventosLiberacion/">
+                <i class="fa fa-times"></i> Cancelar
+            </a>
+        </form>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+
+<script>
+    $("#frm_editar_evento").validate({
+        rules: {
+            "fecha": { required: true },
+            "animal": { required: true },
+            "reserva": { required: true }
+        },
+        messages: {
+            "fecha": { required: "Ingrese la fecha del evento" },
+            "animal": { required: "Seleccione un animal" },
+            "reserva": { required: "Seleccione una reserva" }
+        }
+    });
+</script>
+{% endblock %}

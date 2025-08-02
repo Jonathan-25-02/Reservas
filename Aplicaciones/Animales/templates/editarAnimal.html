@@ -1,0 +1,50 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 bg-light">
+        <h1>Editar Animal</h1>
+        <form id="frm_editar_animal" action="/actualizarAnimal/{{ animal.id }}/" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="nombre">Nombre:</label><br>
+            <input class="form-control" type="text" name="nombre" id="nombre" value="{{ animal.nombre }}" required><br><br>
+
+            <label for="especie">Especie:</label><br>
+            <input class="form-control" type="text" name="especie" id="especie" value="{{ animal.especie }}" required><br><br>
+
+            <label for="foto">Foto Actual:</label><br>
+            {% if animal.foto %}
+                <img src="{{ animal.foto.url }}" alt="Foto actual" width="150"><br>
+            {% endif %}
+            <input class="form-control" type="file" name="foto" id="foto"><br><br>
+
+            <button class="btn btn-warning" type="submit">
+                <i class="fa fa-pen"></i> Editar
+            </button>
+            <a class="btn btn-outline-danger" href="/animales/">
+                <i class="fa fa-times"></i> Cancelar
+            </a>
+        </form>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+
+<script>
+    $("#frm_editar_animal").validate({
+        rules: {
+            "nombre": { required: true, minlength: 3 },
+            "especie": { required: true, minlength: 3 }
+        },
+        messages: {
+            "nombre": {
+                required: "Ingrese el nombre del animal",
+                minlength: "Mínimo 3 caracteres"
+            },
+            "especie": {
+                required: "Ingrese la especie",
+                minlength: "Mínimo 3 caracteres"
+            }
+        }
+    });
+</script>
+{% endblock %}

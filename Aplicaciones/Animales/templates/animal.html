@@ -1,0 +1,67 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+<br>
+<h1>Listado de Animales</h1>
+<a href="/nuevoAnimal" class="btn btn-primary">Agregar Animal</a>
+
+<table class="table table-bordered table-striped table-hover" id="tbl_animales">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Especie</th>
+            <th>Edad</th>
+            <th>Foto</th>
+            <th>Ficha Técnica (PDF)</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for a in animales %}
+        <tr>
+            <td>{{ a.id }}</td>
+            <td>{{ a.nombre }}</td>
+            <td>{{ a.especie }}</td>
+            <td>{{ a.edad }}</td>
+            <td>
+                {% if a.foto %}
+                    <img src="{{ a.foto.url }}" height="80px" alt="">
+                {% else %}
+                    Ninguna
+                {% endif %}
+            </td>
+            <td>
+                {% if a.ficha_tecnica %}
+                    <a href="{{ a.ficha_tecnica.url }}" download>{{ a.ficha_tecnica.name }}</a>
+                {% else %}
+                    Ningún archivo
+                {% endif %}
+            </td>
+            <td>
+                <a href="/editarAnimal/{{ a.id }}" class="btn btn-outline-warning"><i class="fa fa-pen"></i></a>
+                <a href="#" onclick="eliminarAnimal('{{ a.id }}');" class="btn btn-outline-danger"><i class="fa fa-trash"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    function eliminarAnimal(id){
+        Swal.fire({
+            title: "CONFIRMACIÓN",
+            text: "¿Estás seguro de eliminar este animal?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sí, eliminar",
+            cancelButtonText: "Cancelar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "/eliminarAnimal/" + id;
+            }
+        });
+    }
+
+    new DataTable('#tbl_animales', { language: { url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' } });
+</script>
+{% endblock %}
